@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="Tizen Wearable Web Basic Template" />
+<title>Kelner</title>
+<link rel="stylesheet" href="lib/tau/wearable/theme/default/tau.min.css">
+<link rel="stylesheet" media="all and (-tizen-geometric-shape: circle)"
+	href="lib/tau/wearable/theme/default/tau.circle.min.css">
+<link rel="stylesheet" type="text/css" href="css/style.css" />
+
+
+</head>
+
+<body>
+	<div id="no_kitchens" class="ui-page">
+		<div class="ui-content">
+			<div class="center-block">
+				<span id="no-kitchens" class="center-text">Odśwież kuchnie.</span>
+			</div>
+		</div>
+	</div>
+	<div id="kitchens" class="ui-page">
+		<header class="ui-header ui-has-more">
+			<h2 class="ui-title">Kuchnie</h2>
+		</header>
+		<div class="ui-content" id="mainPage">
+			<ul id="kitchenList" data-role="listview" class="ui-listview">
+			</ul>
+		</div>
+	</div>
+	<div id="menu_items" class="ui-page">
+		<header class="ui-header">
+			<h2 class="ui-title waiter_name">Stefan</h2>
+		</header>
+		<div class="ui-content" id="mainPage" data-add-back-btn="true">
+			<ul id="menuItemsList" class="ui-listview">
+			</ul>
+		</div>
+	</div>
+	<div id="single_menu_item_container" class="ui-page">
+		<header class="ui-header">
+			<h2 class="ui-title waiter_name">Stefan</h2>
+		</header>
+		<div class="ui-content" id="mainPage" data-role="page"
+			data-add-back-btn="true">
+			<div class="ui-content">
+				<div class="center-block">
+					<p>
+						<img src="/images/cake.png">
+					</p>
+					<span id="single_menu_item"></span> <span
+						id="single_menu_item_date"></span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="no_menu_items" class="ui-page">
+		<header class="ui-header">
+			<h2 class="ui-title waiter_name">Stefan</h2>
+		</header>
+		<div class="ui-content">
+			<div class="center-block">
+				<span class="center-text"">Brak wydanych przedmiotów</span>
+			</div>
+		</div>
+	</div>
+	<div id="to_slow" class="ui-page">
+		<header class="ui-header">
+			<h2 class="ui-title waiter_name">Stefan</h2>
+		</header>
+		<div class="ui-content">
+			<div class="center-block">
+				<span class="center-text">Za wolno :)</span>
+			</div>
+		</div>
+	</div>
+	<div id="well_done" class="ui-page">
+		<div class="ui-content">
+			<div class="center-block">
+				<p>
+					<span class="center-text">Jesteś odpowiedzialny za</span>
+				</p>
+				<p>
+					<span id="menu_item"></span>
+				</p>
+				<p>
+					<span id="menu_item_date"></span>
+				</p>
+			</div>
+		</div>
+	</div>
+	<script src="js/main.js"></script>
+	<script src="js/sync.js"></script>
+	<script src="js/syncpusher.js"></script>
+	<script src="js/utils.js"></script>
+	<script src="lib/underscore-min.js"></script>
+	<script src="lib/chance.min.js"></script>
+	<script src="lib/tau/wearable/js/tau.js"></script>
+	<script src="lib/circle-helper.js"></script>
+	<script src="lib/pusher.min.js"></script>
+	<script src="lib/jquery-2.1.4.min.js"></script>
+
+</body>
+
+</html>
