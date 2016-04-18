@@ -55,7 +55,24 @@ var refreshPage = function() {
 }
 
 var renderKitchens = function() {
-
+	if (window.kitchens.length != 0) {
+		if (window.kitchens.length)
+			tau.changePage("#kitchens");
+		$("#kitchenList").empty();
+		window.kitchens.sort(function compare(lok1, lok2) {
+			if (lok1.name.toLowerCase() < lok2.name.toLowerCase())
+				return -1;
+			if (lok1.name.toLowerCase() > lok2.name.toLowerCase())
+				return 1;
+			return 0;
+		});
+		window.kitchens.forEach(function(kitchen) {
+			$("#kitchenList").append(renderKitchen(kitchen));
+		});
+		$("#kitchenList li").click(kitchenClickListener);
+	} else {
+		$("#no-kitchens").text('Brak zarejestrowanych kuchni');
+	}
 }
 var renderKitchen = function(kitchen) {
 	return "<li data-id=\"" + kitchen.id
@@ -64,7 +81,18 @@ var renderKitchen = function(kitchen) {
 
 }
 var renderMenuItems = function() {
-
+	$("#menuItemsList").empty();
+	if (window.currentKitchen.queue.length != 1) {
+		tau.changePage("#menu_items");
+		sortQueue()
+		window.currentKitchen.queue.forEach(function(menuItem) {
+			$("#menuItemsList").append(renderMenuItem(menuItem));
+		});
+		$("#menuItemsList li").click(menuItemClickListener);
+	} else {
+		tau.changePage("#single_menu_item_container");
+		renderSinglePageMenuItem(window.currentKitchen.queue[0])
+	}
 }
 
 var renderMenuItem = function(menuItem) {
@@ -90,10 +118,29 @@ var menuItemClickListener = function(e) {
 
 }
 var checkQueue = function() {
-
+$(".waiter_name").text(window.waiter.name);
+	if (window.currentKitchen.queue.length === 0) {
+		tau.changePage("#no_menu_items");
+	} else if (window.currentKitchen.queue.length === 1) {
+		tau.changePage("#single_menu_item_container");
+		renderSinglePageMenuItem(window.currentKitchen.queue[0])
+	} else {
+		tau.changePage("#menu_items");
+		renderMenuItems();
+	}
 }
 var bindResponsibility = function(menuItem) {
-
+tau.changePage("#well_done");
+	$("#menu_item").text(menuItem.name);
+	$("#menu_item_date").text(formatTime(menuItem.date));
+	$('#well_done').unbind("click");
+	var timeTask = window.setTimeout(function() {
+		checkQueue();
+	}, 3000);
+	$('#well_done').click(function() {
+		window.clearTimeout(timeTask)
+		checkQueue();
+	});
 }
 var resetAll = function() {
 	window.pusher = null;
