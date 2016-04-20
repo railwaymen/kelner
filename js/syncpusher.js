@@ -6,19 +6,30 @@ var startServices = function(kitchenId) {
 		});
 		window.channel = window.pusher.subscribe(kitchenId);
 		window.channel.bind('event_complete', function(menuItemJson) {
-			
+			window.currentKitchen.queue.push(menuItemJson)
+			sortQueue()
+			refreshPage()
 		});
 		window.channel.bind('event_take', function(eventJson) {
-			
+			var waiter = eventJson.waiter
+			if (waiter.id != window.waiter.id
+					&& waiter.name != window.waiter.name) {
+				var menuItem = event.menu_item
+				removeFromQueue(menuItem.id)
+				sortQueue()
+				refreshPage()
+			}
 		});
 		window.channel.bind('event_kitchen_disconnected', function() {
-		
+			stopServices()
+			tau.changePage("#no_kitchens");
+			alert('Kuchnia została zamknięta')
 		});
 	}
 }
 var stopServices = function() {
 	if (window.pusher && window.channel) {
-		window.pusher.unsubscribe(window.channel);
+		window.pusher.unsubscribe(window.channel.name);
 	}
 	resetAll()
 }

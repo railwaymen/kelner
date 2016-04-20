@@ -93,6 +93,7 @@ var renderMenuItems = function() {
 		tau.changePage("#single_menu_item_container");
 		renderSinglePageMenuItem(window.currentKitchen.queue[0])
 	}
+
 }
 
 var renderMenuItem = function(menuItem) {
@@ -112,13 +113,31 @@ var renderSinglePageMenuItem = function(menuItem) {
 
 }
 var kitchenClickListener = function(e) {
+	var kitchenId = $(e.currentTarget).data("id");
+	var deviceId = tizen.systeminfo.getCapabilities().duid
+	if (deviceId) {
+		window.waiter = {
+			id : deviceId,
+			name : chance.name()
+		}
+	} else {
+		window.waiter = {
+			id : uuid(),
+			name : chance.name()
+		}
+	}
+	getMenuItems(kitchenId, JSON.stringify(window.waiter))
 }
 
 var menuItemClickListener = function(e) {
-
+	var menuItemId = $(e.currentTarget).data("id");
+	var menuItem = _.findWhere(window.currentKitchen.queue, {
+		id : menuItemId
+	});
+	takeMenuItem(menuItem, JSON.stringify(window.waiter))
 }
 var checkQueue = function() {
-$(".waiter_name").text(window.waiter.name);
+	$(".waiter_name").text(window.waiter.name);
 	if (window.currentKitchen.queue.length === 0) {
 		tau.changePage("#no_menu_items");
 	} else if (window.currentKitchen.queue.length === 1) {
@@ -130,7 +149,7 @@ $(".waiter_name").text(window.waiter.name);
 	}
 }
 var bindResponsibility = function(menuItem) {
-tau.changePage("#well_done");
+	tau.changePage("#well_done");
 	$("#menu_item").text(menuItem.name);
 	$("#menu_item_date").text(formatTime(menuItem.date));
 	$('#well_done').unbind("click");

@@ -32,6 +32,8 @@ var sendRequestWithBody = function(method, url, body, onSuccess, onError) {
 
 var getKitchens = function() {
 	sendRequest('GET', buildUrl('kitchens', ''), function(request, data) {
+		window.kitchens = data;
+		renderKitchens()
 	}, function(data) {
 		alert('Nie można pobrać kuchni!');
 	});
@@ -39,6 +41,7 @@ var getKitchens = function() {
 var logoutWaiter = function(kitchenId, waiterId) {
 	sendRequest('DELETE', buildUrl('kitchens/' + kitchenId + '/waiters/'
 			+ waiterId), function(request, data) {
+		resetAll()
 	}, function(data) {
 		alert('Problem wylogowania');
 	});
@@ -46,14 +49,26 @@ var logoutWaiter = function(kitchenId, waiterId) {
 var getMenuItems = function(kitchenId, waiter) {
 	sendRequestWithBody('POST', buildUrl('kitchens/' + kitchenId
 			+ '/menu_items'), waiter, function(request, data) {
+		window.currentKitchen = data;
+		checkQueue();
+		startServices(kitchenId)
 	}, function(data) {
-
+		window.waiter = null;
+		alert('Nie można pobrać kuchni!');
 	});
 }
 var takeMenuItem = function(menuItem, waiter) {
 	sendRequestWithBody('DELETE', buildUrl('kitchens/'
 			+ window.currentKitchen.id + '/menu_items/' + menuItem.id, ''),
 			waiter, function(request, data) {
+				removeFromQueue(menuItem.id)
+				if (request.status === 204) {
+					tau.changePage("#to_slow");
+				} else {
+					bindResponsibility(menuItem)
+				}
 			}, function(request, data) {
+				removeFromQueue(menuItemId)
+				refreshPage()
 			});
 }
